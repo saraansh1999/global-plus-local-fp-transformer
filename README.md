@@ -3,11 +3,12 @@ Fingerprint feature extraction is a task that is solved using either a global or
 
 
 # Setup
-The `requirements.txt` file can be used to setup a virtual environment.
+* The `requirements.txt` file can be used to setup a virtual environment.
 ```
 pip install -r requirements.txt
 ```
-The `MSU-LatentAFIS` folder is built upon the repository: https://github.com/prip-lab/MSU-LatentAFIS/tree/1d6e837651a1b5dac3bd48d672397f620bf9a0a5. Hence to use it the setup described in the original repo will have to be performed separately.
+* The imagenet model for CvT is used to initialize our training. Download the model from "" and place it in the `pretrained/` folder.
+* The `MSU-LatentAFIS` folder is built upon the repository: https://github.com/prip-lab/MSU-LatentAFIS/tree/1d6e837651a1b5dac3bd48d672397f620bf9a0a5. Hence to use it the setup described in the original repo will have to be performed separately.
 
 # Data
 
@@ -88,4 +89,4 @@ python metrics/norm_merge_scores.py --global_dir <global scores save dir> \
 The values for `norm, ts_thresh, fs_thresh` are set to the ones set in the paper. These can be changed according to the use case.
 
 # Models
-The models trained for the paper can be found in the `models` folder.
+The models trained for the paper can be found at "". Place these in the `models` folder.
