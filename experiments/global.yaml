@@ -1,0 +1,88 @@
+OUTPUT_DIR: ''
+WORKERS: 6
+PRINT_FREQ: 50
+AMP:
+  ENABLED: true
+MODEL:
+  NAME: cvt_detr
+  PRETRAINED: './pretrained/CvT-13-384x384-IN-22k.pth'
+  PRE_MODE: 'imagenet'
+  GLOBAL_EMB_SZ: 192
+  TOKEN_EMB_SZ: 64
+  RET_DEC_INTERMEDIATE: false
+  TOKEN_NORM: false
+  RET_GLOBAL: true
+  RET_LOCAL: false
+  AFIS_SUPERVISION: true
+  SPEC:
+    INIT: 'trunc_norm'
+    NUM_STAGES: 3
+    PATCH_SIZE: [7, 3, 3]
+    PATCH_STRIDE: [4, 2, 2]
+    PATCH_PADDING: [2, 1, 1]
+    DIM_EMBED: [64, 192, 384]
+    NUM_HEADS: [1, 3, 6]
+    DEPTH: [1, 2, 10]
+    MLP_RATIO: [4.0, 4.0, 4.0]
+    ATTN_DROP_RATE: [0.0, 0.0, 0.2]
+    DROP_RATE: [0.0, 0.0, 0.2]
+    DROP_PATH_RATE: [0.0, 0.0, 0.1]
+    QKV_BIAS: [True, True, True]
+    CLS_TOKEN: [False, False, True]
+    POS_EMBED: [False, False, False]
+    QKV_PROJ_METHOD: ['dw_bn', 'dw_bn', 'dw_bn']
+    KERNEL_QKV: [3, 3, 3]
+    PADDING_KV: [1, 1, 1]
+    STRIDE_KV: [2, 2, 2]
+    PADDING_Q: [1, 1, 1]
+    STRIDE_Q: [1, 1, 1]
+    NUM_DEC: 6
+AUG:
+  TIMM_AUG:
+    USE_LOADER: false
+LOSS:
+  LOSS: 'match-then-supervise'
+  LOSS_NAMES: ('loss_global_kd',)
+  LOSS_WEIGHTS: (1,)
+  HUNGARIAN_WEIGHTS: (1,1)
+  HUNGARIAN_USE_ORI: true
+CUDNN:
+  BENCHMARK: true
+  DETERMINISTIC: true
+  ENABLED: true
+DATASET:
+  MAX_MNT: 50
+  TRAIN_DATASET: 'cvtdetr'
+  TRAIN_IMGS: ''
+  TRAIN_GLOBAL_EMBS: ''
+  TRAIN_TOKEN_EMBS: ''
+  VAL_DATASET: 'cvtdetr'
+  VAL_IMGS: ''
+  VAL_GLOBAL_EMBS: ''
+  VAL_TOKEN_EMBS: ''
+TEST:
+  BATCH_SIZE_PER_GPU: 8
+  IMAGE_SIZE: [384, 384]
+  DPPRE: global
+  INTERPOLATION: 3
+TRAIN:
+  BATCH_SIZE_PER_GPU: 8
+  LR: 0.0001
+  IMAGE_SIZE: [384, 384]
+  BEGIN_EPOCH: 0
+  END_EPOCH: 100
+  LR_SCHEDULER:
+    METHOD: 'timm'
+    ARGS:
+      sched: 'cosine'
+      warmup_epochs: 5
+      warmup_lr: 0.000001
+      min_lr: 0.000001
+      cooldown_epochs: 10
+      decay_rate: 0.1
+  OPTIMIZER: adamW
+  WD: 0.05
+  WITHOUT_WD_LIST: ['bn', 'bias', 'ln']
+  SHUFFLE: true
+DEBUG:
+  DEBUG: false

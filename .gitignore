@@ -1,0 +1,13 @@
+# all logs
+slurm*
+logs/*
+
+# env folder
+cvt/
+
+# cache
+__pycache__/
+
+# models
+pretrained/*
+models/*
