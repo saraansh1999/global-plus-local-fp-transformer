@@ -9,5 +9,5 @@ cvt/
 __pycache__/
 
 # models
-pretrained/*
-models/*
+pretrained/*.pth
+models/*.pth
