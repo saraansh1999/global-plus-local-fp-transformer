@@ -7,15 +7,15 @@ The following is the architecture used by us:
 For further details refer to our ICPR 2022 paper, 
 
 
-# Setup
+## Setup
 * The `requirements.txt` file can be used to setup a virtual environment.
 ```
 pip install -r requirements.txt
 ```
-* The imagenet model for CvT is used to initialize our training. Download the model from "" and place it in the `pretrained/` folder.
-* The `MSU-LatentAFIS` folder is built upon the repository: https://github.com/prip-lab/MSU-LatentAFIS/tree/1d6e837651a1b5dac3bd48d672397f620bf9a0a5. Hence to use it the setup described in the original repo will have to be performed separately.
+* The imagenet model for CvT is used to initialize our training. Download the model from [here](https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_research_iiit_ac_in/EriTwfzu6e5AmS_-VPSLt48BW1HX0IilyWbUm5KBZWmcSw?e=akMI5c) and place it in the `pretrained/` folder.
+* The `MSU-LatentAFIS` folder is built upon the [MSU-LatentAFIS](https://github.com/prip-lab/MSU-LatentAFIS/tree/1d6e837651a1b5dac3bd48d672397f620bf9a0a5) repository. Hence to use it the setup described in the original repo will have to be performed separately.
 
-# Data
+## Data
 
 To train/validate our approach we need:
 
@@ -34,7 +34,7 @@ python extraction/pipeline.py --gpu 0 \
 
 Make three separate folders for each of the above and maintain the same folder structure in each of them.
 
-# Train
+## Train
 To train our models we use the `submit.sh` file. This takes a configuration file as input and also allows in-line parameter assignment. Images dir correspond to the first point in the Data section, Global embs dir corresponds to the second point in the Data section, and Local embs dir corresponds to the third point in the Data section.
 ```
 bash run.sh -g <# gpus> -t train --cfg <configuration file> \
@@ -56,7 +56,7 @@ Use configuration file `experiments/global.yaml`. This will train the model to l
 Use configuration file `experiments/local.yaml`. This will train the model to learn minutiae extraction and corresponding local embedding extraction.
 
 
-# Embedding Extraction
+## Embedding Extraction
 ```
 bash run.sh -g 1 -t inference --cfg <config file> \
 TEST.MODEL_FILE <model .pth file> \
@@ -69,7 +69,7 @@ DATASET.VAL_TOKEN_EMBS <inference local embs dir>
 Change the configuration file similar to the Train section to extract embeddings from different types of models.
 **Note:** For Global+Local models,  a single embedding extraction step would generate both global and local embeddings.
 
-# Matching
+## Matching
 ##### Global
 This requires simple cosine distance computation for each fingerprint pair as the global embeddings are fixed-length vectors. The embeddings are fetched from the `global_embs.npy` file created by the Embedding Extraction step.
 ```
@@ -93,5 +93,7 @@ python metrics/norm_merge_scores.py --global_dir <global scores save dir> \
 ```
 The values for `norm, ts_thresh, fs_thresh` are set to the ones set in the paper. These can be changed according to the use case.
 
-# Models
-The models trained for the paper can be found at "". Place these in the `models` folder.
+## Models
+The models trained for the paper can be found [here](https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_research_iiit_ac_in/Eo2XSZm0gOxKhm11EH8_SygBI33Vc1jtYjlFbwUDgnNSKg?e=Sm1UK8). Place these in the `models` folder.
+
+## Citation
