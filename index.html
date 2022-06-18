@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Transformer Based Global+Local Fingerprint Matching | global-plus-local-fp-transformer</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Transformer Based Global+Local Fingerprint Matching" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://saraansh1999.github.io/global-plus-local-fp-transformer/" />
+<meta property="og:url" content="https://saraansh1999.github.io/global-plus-local-fp-transformer/" />
+<meta property="og:site_name" content="global-plus-local-fp-transformer" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Transformer Based Global+Local Fingerprint Matching" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","headline":"Transformer Based Global+Local Fingerprint Matching","name":"global-plus-local-fp-transformer","url":"https://saraansh1999.github.io/global-plus-local-fp-transformer/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="stylesheet" href="/global-plus-local-fp-transformer/assets/css/style.css?v=5fa917b60d863c81cf6bd02acd6798d285b13946">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/global-plus-local-fp-transformer/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <header class="page-header" role="banner">
+      <h1 class="project-name">Transformer Based Global+Local Fingerprint Matching</h1>
+      <h2 class="project-tagline"></h2>
+      
+        <a href="https://github.com/saraansh1999/global-plus-local-fp-transformer" class="btn">View on GitHub</a>
+      
+      
+    </header>
+
+    <main id="content" class="main-content" role="main">
+      <h1 id="transformer-based-globallocal-fingerprint-matching">Transformer Based Global+Local Fingerprint Matching</h1>
+<p>Fingerprint feature extraction is a task that is solved using either a global or a local representation. State-of-the-art global approaches use heavy deep learning models to process the full fingerprint image at once, which makes the corresponding approach memory intensive. On the other hand, local approaches involve minutiae based patch extraction, multiple feature extraction steps and an expensive matching stage, which make the corresponding approach time intensive. However, both these approaches provide useful and sometimes exclusive insights for solving the problem. Using both approaches together for extracting fingerprint representations is semantically useful but quite inefficient. Our convolutional transformer based approach with an in-built minutiae extractor provides a time and memory efficient solution to extract a global as well as a local representation of the fingerprint. The use of these representations along with a smart matching process gives us state-of-the-art performance across multiple databases.
+The following is the architecture used by us:</p>
+
+<p><img src="./figs/arch.png" alt="architecture" width="400" /></p>
+
+<p>For further details refer to our ICPR 2022 paper,</p>
+
+<h2 id="setup">Setup</h2>
+<ul>
+  <li>The <code class="language-plaintext highlighter-rouge">requirements.txt</code> file can be used to setup a virtual environment.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install -r requirements.txt
+</code></pre></div>    </div>
+  </li>
+  <li>The imagenet model for CvT is used to initialize our training. Download the model from <a href="https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_research_iiit_ac_in/EriTwfzu6e5AmS_-VPSLt48BW1HX0IilyWbUm5KBZWmcSw?e=akMI5c">here</a> and place it in the <code class="language-plaintext highlighter-rouge">pretrained/</code> folder.</li>
+  <li>The <code class="language-plaintext highlighter-rouge">MSU-LatentAFIS</code> folder is built upon the <a href="https://github.com/prip-lab/MSU-LatentAFIS/tree/1d6e837651a1b5dac3bd48d672397f620bf9a0a5">MSU-LatentAFIS</a> repository. Hence to use it the setup described in the original repo will have to be performed separately.</li>
+</ul>
+
+<h2 id="data">Data</h2>
+
+<p>To train/validate our approach we need:</p>
+
+<ul>
+  <li>Segmented images of single fingerprints. For this we can use the <code class="language-plaintext highlighter-rouge">tools/augmenter.py</code> file.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python tools/augmenter.py --input_dir &lt;&gt; --output_dir &lt;&gt; --segment
+</code></pre></div>    </div>
+  </li>
+  <li>Corresponding Global representation obtained from a teacher. The dataloader expects a <code class="language-plaintext highlighter-rouge">.npy</code> file corresponding to each image containing a 192 dimensional numpy array. We have used DeepPrint in our paper, but it can’t be shared due to its propreitary nature.</li>
+  <li>Corresponding minutiae points obtained from a minutiae extractor and a corresponding set of local representations from a teacher. The dataloader expects a ‘.npy’ file corresponding to each image containing a dictionary with all the required local information. This can be obtained using the <code class="language-plaintext highlighter-rouge">MSU-LatentAFIS</code> folder. In our work we have used Verifinger minutiae points but we can’t share that as it is a proprietary software. The following command can be used to obtain local embeddings using LatentAFIS’ in-built minutiae detector.
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python extraction/pipeline.py --gpu 0 \
+--mode gt --patch_types 1 --data_format all_in_one \
+--input_dir &lt;&gt; --output_dir &lt;&gt; \
+--minu_from afis;
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Make three separate folders for each of the above and maintain the same folder structure in each of them.</p>
+
+<h2 id="train">Train</h2>
+<p>To train our models we use the <code class="language-plaintext highlighter-rouge">submit.sh</code> file. This takes a configuration file as input and also allows in-line parameter assignment. Images dir correspond to the first point in the Data section, Global embs dir corresponds to the second point in the Data section, and Local embs dir corresponds to the third point in the Data section.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash run.sh -g &lt;# gpus&gt; -t train --cfg &lt;configuration file&gt; \
+OUTPUT_DIR &lt;global model save dir&gt; \
+DATASET.TRAIN_IMGS &lt;train images dir&gt; \
+DATASET.TRAIN_GLOBAL_EMBS &lt;train global embs dir&gt; \
+DATASET.TRAIN_TOKEN_EMBS &lt;train local embs dir&gt; \
+DATASET.VAL_IMGS &lt;validation images dir&gt; \
+DATASET.VAL_GLOBAL_EMBS &lt;validation global embs dir&gt; \
+DATASET.VAL_TOKEN_EMBS &lt;validation local embs dir&gt; \
+</code></pre></div></div>
+<p>To perform different types of training just change the configuration file or the in-line parameters.</p>
+
+<h5 id="global">Global</h5>
+<p>Use configuration file <code class="language-plaintext highlighter-rouge">experiments/global.yaml</code>. This will train the model to learn only global embedding extraction.</p>
+
+<h5 id="local">Local</h5>
+<p>Use configuration file <code class="language-plaintext highlighter-rouge">experiments/local.yaml</code>. This will train the model to learn minutiae extraction and corresponding local embedding extraction.</p>
+
+<h2 id="embedding-extraction">Embedding Extraction</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash run.sh -g 1 -t inference --cfg &lt;config file&gt; \
+TEST.MODEL_FILE &lt;model .pth file&gt; \
+OUTPUT_DIR &lt;embs save dir&gt; \
+DATASET.VAL_DATASET inference \
+DATASET.VAL_IMGS &lt;inference images dir&gt; \
+DATASET.VAL_GLOBAL_EMBS &lt;inference global embs dir&gt; \
+DATASET.VAL_TOKEN_EMBS &lt;inference local embs dir&gt;
+</code></pre></div></div>
+<p>Change the configuration file similar to the Train section to extract embeddings from different types of models.
+<strong>Note:</strong> For Global+Local models,  a single embedding extraction step would generate both global and local embeddings.</p>
+
+<h2 id="matching">Matching</h2>
+<h5 id="global-1">Global</h5>
+<p>This requires simple cosine distance computation for each fingerprint pair as the global embeddings are fixed-length vectors. The embeddings are fetched from the <code class="language-plaintext highlighter-rouge">global_embs.npy</code> file created by the Embedding Extraction step.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python metrics/global_metrics.py --embs_path &lt;embs save dir&gt;/global_embs.npy \
+--people 100 --accq 8 --score_path &lt;global scores save dir&gt;;
+</code></pre></div></div>
+<h5 id="local-1">Local</h5>
+<p>For local matching we use the minutiae matcher provided by LatentAFIS. For this purpose we use the <code class="language-plaintext highlighter-rouge">MSU-LatentAFIS/inference.sh</code> file. This will convert the pickle files created by the Embedding Extraction step into template format required for local matching and then perform the matching itself.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash inference.sh &lt;embs save dir&gt; &lt;local scores save dir&gt; &lt;# subjects&gt; &lt;# impressions/subject&gt; pkl;
+</code></pre></div></div>
+
+<h5 id="global--local">Global + Local</h5>
+<p>Perform the global and local matching processes individually to obtain the global and local scores for all fingerprint pairs. 
+<strong>Note:</strong> We are calculating the local scores for all pairs only for experimental purposes. Our inference algorithm would not require the use of the local scores for all pairs while calculating the Global+Local scores.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python metrics/norm_merge_scores.py --global_dir &lt;global scores save dir&gt; \
+--afis_dir &lt;local scores save dir&gt; \
+--save_dir &lt;final scores save dir&gt; \
+--norm bisigm --ts_thresh 0.75 --fs_thresh 0.15;
+</code></pre></div></div>
+<p>The values for <code class="language-plaintext highlighter-rouge">norm, ts_thresh, fs_thresh</code> are set to the ones set in the paper. These can be changed according to the use case.</p>
+
+<h2 id="models">Models</h2>
+<p>The models trained for the paper can be found <a href="https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_research_iiit_ac_in/Eo2XSZm0gOxKhm11EH8_SygBI33Vc1jtYjlFbwUDgnNSKg?e=Sm1UK8">here</a>. Place these in the <code class="language-plaintext highlighter-rouge">models</code> folder.</p>
+
+<h2 id="citation">Citation</h2>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/saraansh1999/global-plus-local-fp-transformer">global-plus-local-fp-transformer</a> is maintained by <a href="https://github.com/saraansh1999">saraansh1999</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </main>
+  </body>
+</html>
+
