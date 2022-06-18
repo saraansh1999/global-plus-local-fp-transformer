@@ -3,6 +3,7 @@ Fingerprint feature extraction is a task that is solved using either a global or
 
 ## Architecture
 The following is the architecture used by us:
+
 <img src="./figs/arch.png" alt="architecture" width="400"/>
 
 
