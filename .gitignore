@@ -1,6 +1,7 @@
 # all logs
 slurm*
 logs/*
+*.log
 
 # env folder
 cvt/
