@@ -1,13 +1,12 @@
 # Transformer Based Global+Local Fingerprint Matching
 Fingerprint feature extraction is a task that is solved using either a global or a local representation. State-of-the-art global approaches use heavy deep learning models to process the full fingerprint image at once, which makes the corresponding approach memory intensive. On the other hand, local approaches involve minutiae based patch extraction, multiple feature extraction steps and an expensive matching stage, which make the corresponding approach time intensive. However, both these approaches provide useful and sometimes exclusive insights for solving the problem. Using both approaches together for extracting fingerprint representations is semantically useful but quite inefficient. Our convolutional transformer based approach with an in-built minutiae extractor provides a time and memory efficient solution to extract a global as well as a local representation of the fingerprint. The use of these representations along with a smart matching process gives us state-of-the-art performance across multiple databases.
-The following is the architecture used by us:
 
+## Architecture
+The following is the architecture used by us:
 <img src="./figs/arch.png" alt="architecture" width="400"/>
 
-For further details refer to our ICPR 2022 paper, 
 
-
-## Setup
+<!-- ## Setup
 * The `requirements.txt` file can be used to setup a virtual environment.
 ```
 pip install -r requirements.txt
@@ -95,5 +94,5 @@ The values for `norm, ts_thresh, fs_thresh` are set to the ones set in the paper
 
 ## Models
 The models trained for the paper can be found [here](https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_research_iiit_ac_in/Eo2XSZm0gOxKhm11EH8_SygBI33Vc1jtYjlFbwUDgnNSKg?e=Sm1UK8). Place these in the `models` folder.
-
+ -->
 ## Citation
