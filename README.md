@@ -4,7 +4,7 @@ The following is the architecture used by us:
 
 <img src="./figs/arch.png" alt="architecture" width="400"/>
 
-For further details refer to our ICPR 2022 paper, 
+For further details refer to our ICPR 2022 paper, https://arxiv.org/abs/2209.03846
 
 
 ## Setup
@@ -97,3 +97,21 @@ The values for `norm, ts_thresh, fs_thresh` are set to the ones set in the paper
 The models trained for the paper can be found [here](https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_research_iiit_ac_in/Eo2XSZm0gOxKhm11EH8_SygBI33Vc1jtYjlFbwUDgnNSKg?e=Sm1UK8). Place these in the `models` folder.
 
 ## Citation
+@misc{https://doi.org/10.48550/arxiv.2209.03846,
+  doi = {10.48550/ARXIV.2209.03846},
+  
+  url = {https://arxiv.org/abs/2209.03846},
+  
+  author = {Tandon, Saraansh and Namboodiri, Anoop},
+  
+  keywords = {Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  
+  title = {Transformer based Fingerprint Feature Extraction},
+  
+  publisher = {arXiv},
+  
+  year = {2022},
+  
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+
