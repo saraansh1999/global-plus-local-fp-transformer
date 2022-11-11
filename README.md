@@ -12,7 +12,7 @@ For further details refer to our ICPR 2022 paper, https://arxiv.org/abs/2209.038
 ```
 pip install -r requirements.txt
 ```
-* The imagenet model for CvT is used to initialize our training. Download the model from [here](https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_research_iiit_ac_in/EriTwfzu6e5AmS_-VPSLt48BW1HX0IilyWbUm5KBZWmcSw?e=akMI5c) and place it in the `pretrained/` folder.
+* The imagenet model for CvT is used to initialize our training. Download the model from [here](https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_alumni_iiit_ac_in/EriTwfzu6e5AmS_-VPSLt48BW1HX0IilyWbUm5KBZWmcSw?e=PjRBWn) and place it in the `pretrained/` folder.
 * The `MSU-LatentAFIS` folder is built upon the [MSU-LatentAFIS](https://github.com/prip-lab/MSU-LatentAFIS/tree/1d6e837651a1b5dac3bd48d672397f620bf9a0a5) repository. Hence to use it the setup described in the original repo will have to be performed separately.
 
 ## Data
@@ -94,7 +94,7 @@ python metrics/norm_merge_scores.py --global_dir <global scores save dir> \
 The values for `norm, ts_thresh, fs_thresh` are set to the ones set in the paper. These can be changed according to the use case.
 
 ## Models
-The models trained for the paper can be found [here](https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_research_iiit_ac_in/Eo2XSZm0gOxKhm11EH8_SygBI33Vc1jtYjlFbwUDgnNSKg?e=Sm1UK8). Place these in the `models` folder.
+The models trained for the paper can be found [here](https://iiitaphyd-my.sharepoint.com/:f:/g/personal/saraansh_tandon_alumni_iiit_ac_in/Eo2XSZm0gOxKhm11EH8_SygBI33Vc1jtYjlFbwUDgnNSKg?e=czean6). Place these in the `models` folder.
 
 ## Citation
 @misc{https://doi.org/10.48550/arxiv.2209.03846,
