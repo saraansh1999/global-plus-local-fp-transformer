@@ -266,6 +266,51 @@ def inference(config, val_loader, model, criterion, output_dir, tb_log_dir,
     logging.info('=> switch to train mode')
     model.train()
 
+@torch.no_grad()
+def only_forward(config, val_loader, model):
+    batch_time = AverageMeter()
+
+    logging.info('=> switch to eval mode')
+    model.eval()
+
+    results = {}
+
+    end = time.time()
+
+    for i, (inputs) in enumerate(val_loader):
+        
+        print("Starting batch", i, "...")
+        outputs = model(inputs['img'])
+        
+        if config.MODEL.RET_DEC_INTERMEDIATE:
+            if 'kd_tokens' in outputs:
+                outputs['kd_tokens'] = outputs['kd_tokens'][-1]
+            if 'posori_tokens' in outputs:
+                outputs['posori_tokens'] = outputs['posori_tokens'][-1]
+            
+        if len(results) == 0:
+            if 'kd_tokens' in outputs:
+                results['embs'] = outputs['kd_tokens'].cpu().numpy()
+                results['posori'] = outputs['posori_tokens'].cpu().numpy()
+            if 'kd_global' in outputs:
+                results['global'] = outputs['kd_global'].cpu().numpy()
+                if len(results['global'].shape) == 1:
+                    results['global'] = results['global'].reshape(1, -1)
+        else:
+            if 'kd_tokens' in outputs:
+                results['embs'] = np.concatenate((results['embs'], outputs['kd_tokens'].cpu().numpy()))
+                results['posori'] = np.concatenate((results['posori'], outputs['posori_tokens'].cpu().numpy()))
+            if 'kd_global' in outputs:
+                if len(outputs['kd_global'].shape) == 1:
+                    outputs['kd_global'] = outputs['kd_global'].reshape(1, -1)
+                results['global'] = np.concatenate((results['global'], outputs['kd_global'].cpu().numpy()), axis=0)
+        
+        # measure elapsed time
+        batch_time.update(time.time() - end)
+        end = time.time()
+
+    return results
+    
 
 def _meter_reduce(meter):
     rank = comm.local_rank

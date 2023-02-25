@@ -40,6 +40,8 @@ def build_dataset(cfg, is_train):
            dataset = CustomDatasetCVTDETR(cfg, is_train)
         elif 'inference' in cfg.DATASET.VAL_DATASET:
            dataset = CustomDatasetInference(cfg, is_train)
+        elif 'onlyImages' in cfg.DATASET.VAL_DATASET:
+           dataset = CustomDatasetOnlyImages(cfg, is_train)
         else:
             raise ValueError('Unkown dataset: {}'.format(cfg.DATASET.DATASET))
     return dataset
@@ -128,7 +130,35 @@ class CustomDatasetCVTDETR(torch.utils.data.Dataset):
 
         return inputs
 
+class CustomDatasetOnlyImages(torch.utils.data.Dataset):
+    def __init__(self, cfg, is_train):
+        self.transforms = build_transforms(cfg, is_train=False)         # we dont want augs
 
+        data_dir = cfg.DATASET.VAL_IMGS
+        self.img_sz = cfg.TEST.IMAGE_SIZE
+
+        self.global_req = cfg.MODEL.RET_GLOBAL
+        self.local_req = cfg.MODEL.RET_LOCAL
+
+        self.imgs = []
+
+        for root, dirs, files in os.walk(data_dir):
+            for file in files:
+                fpath = os.path.join(root, file)
+                self.imgs.append(fpath)
+                
+    def __len__(self):
+        return len(self.imgs)
+
+    def __getitem__(self, ind):
+        inputs = {}
+
+        img = Image.open(self.imgs[ind]).convert('RGB')
+        img = self.transforms(img)
+        inputs['img'] = img
+
+        return inputs
+    
 class CustomDatasetInference(torch.utils.data.Dataset):
     def __init__(self, cfg, is_train):
         self.transforms = build_transforms(cfg, is_train=False)         # we dont want augs

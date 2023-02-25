@@ -236,9 +236,10 @@ class CVTDETR(nn.Module):
             hidden_sz = self.cvt.dim_embed
             self.cvt.head = nn.Linear(hidden_sz, global_emb_sz)
             trunc_normal_(self.cvt.head.weight, std=0.02)
-        elif pre_mode == "same":
+        else:
             hidden_sz = self.cvt.dim_embed
             self.cvt.head = nn.Linear(hidden_sz, global_emb_sz)
+            
 
         self.ret_global = ret_global
 
