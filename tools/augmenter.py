@@ -49,7 +49,7 @@ def crop(img):
         return img
 
 def check_path(fname):
-    dir_name = '/'.join(fname.split('/')[:-1])
+    dir_name = (os.sep).join(fname.split(os.sep)[:-1])
     if not os.path.exists(dir_name):
         print("Creating Directory: ", dir_name)
         os.makedirs(dir_name)

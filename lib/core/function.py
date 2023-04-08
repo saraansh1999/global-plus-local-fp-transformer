@@ -280,6 +280,9 @@ def only_forward(config, val_loader, model):
     for i, (inputs) in enumerate(val_loader):
         
         print("Starting batch", i, "...")
+        
+        inputs = {k: v.to(torch.device('cuda')) for k, v in inputs.items()}
+        
         outputs = model(inputs['img'])
         
         if config.MODEL.RET_DEC_INTERMEDIATE:
