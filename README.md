@@ -82,6 +82,7 @@ Change the configuration file similar to the Train section to extract embeddings
 **Note:** For Global+Local models,  a single embedding extraction step would generate both global and local embeddings.
 
 ## Matching
+Note: We are aware of the non-generic code uploaded here for local matching. We are working on correcting it. Thanks.
 ##### Global
 This requires simple cosine distance computation for each fingerprint pair as the global embeddings are fixed-length vectors. The embeddings are fetched from the `global_embs.npy` file created by the Embedding Extraction step.
 ```
